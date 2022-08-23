@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import useUserStore from "../store/userStore";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import useUserStore from '../store/userStore';
+import { useNavigate } from 'react-router-dom';
 
 const LoadingPage = () => {
     const navigate = useNavigate();
@@ -8,10 +8,10 @@ const LoadingPage = () => {
     useEffect(() => {
         if (userToken) {
           getUserDetails().then(() => {
-            navigate("/home");
+            navigate('/home');
           });
         } else {
-          navigate("/login");
+          navigate('/login');
         }
     } , [userToken, getUserDetails, navigate]);
     return <h2>Loading Page</h2>;

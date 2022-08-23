@@ -1,11 +1,11 @@
-import { useState } from "react";
-import useUserStore from "../store/userStore";
+import { useState } from 'react';
+import useUserStore from '../store/userStore';
 
 const LoginScreen = () => {
 
     const initialValues = {
-      username: "",
-      password: ""
+      username: '',
+      password: ''
     };
 
     const [values, setValues] = useState(initialValues);
@@ -43,24 +43,24 @@ const LoginScreen = () => {
     } else {
         <h2>User is not logged in</h2>;
         return (
-          <div className="login-screen">
+          <div className='login-screen'>
             <h1>Login</h1>
             <form>
               <input
                 value={values.username}
                 onChange={handleInputChange}
-                type="text"
-                name="username"
-                placeholder="Username"
+                type='text'
+                name='username'
+                placeholder='Username'
               />
               <input
                 value={values.password}
                 onChange={handleInputChange}
-                type="password"
-                name="password"
-                placeholder="Password"
+                type='password'
+                name='password'
+                placeholder='Password'
               />
-              <button onClick={loginUser} type="submit">
+              <button onClick={loginUser} type='submit'>
                 Login
               </button>
             </form>

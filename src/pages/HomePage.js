@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import useUserStore from "../store/userStore";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useUserStore from '../store/userStore';
 
 const HomePage = () => {
 
@@ -10,10 +10,9 @@ const HomePage = () => {
 
     useEffect(() => {
       if (!isUserLoggedIn) {
-        navigate("/login");
+        navigate('/login');
       }
     }, [isUserLoggedIn, navigate]);
-
 
     const logoutUser = () => {
       logout();

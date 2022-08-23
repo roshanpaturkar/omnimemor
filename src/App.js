@@ -14,13 +14,13 @@ function App() {
   }, [checkUserToken]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <h1>Welcome to Omnimemor!</h1>
 
       <Routes location={location} key={location.pathname}>
-        <Route path="/" caseSensitive={true} element={<LoadingPage />} />
-        <Route path="/login" caseSensitive={true} element={<LoginPage />} />
-        <Route path="/home" caseSensitive={true} element={<HomePage />} />
+        <Route path='/' caseSensitive={true} element={<LoadingPage />} />
+        <Route path='/login' caseSensitive={true} element={<LoginPage />} />
+        <Route path='/home' caseSensitive={true} element={<HomePage />} />
       </Routes>
     </div>
   );

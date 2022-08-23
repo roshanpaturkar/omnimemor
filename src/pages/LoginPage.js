@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import useUserStore from "../store/userStore";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import useUserStore from '../store/userStore';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const { login, isUserLoggedIn } = useUserStore();
@@ -8,15 +8,13 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isUserLoggedIn) {
-      navigate("/home");
+      navigate('/home');
     }
   });
 
-  
-
   const initialValues = {
-    username: "",
-    password: "",
+    username: '',
+    password: '',
   };
 
   const [values, setValues] = useState(initialValues);
@@ -33,29 +31,29 @@ const LoginPage = () => {
     e.preventDefault();
     login(values.username, values.password).then(() => {
       setValues(initialValues);
-      navigate("/home");
+      navigate('/home');
     });
   };
 
   return (
-    <div className="login-screen">
+    <div className='login-screen'>
       <h1>Login</h1>
       <form>
         <input
           value={values.username}
           onChange={handleInputChange}
-          type="text"
-          name="username"
-          placeholder="Username"
+          type='text'
+          name='username'
+          placeholder='Username'
         />
         <input
           value={values.password}
           onChange={handleInputChange}
-          type="password"
-          name="password"
-          placeholder="Password"
+          type='password'
+          name='password'
+          placeholder='Password'
         />
-        <button onClick={loginUser} type="submit">
+        <button onClick={loginUser} type='submit'>
           Login
         </button>
       </form>
