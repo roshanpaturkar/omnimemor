@@ -5,3 +5,10 @@ export const getUserData = (user) => {
 
     return user;
 }
+
+export const getUserToken = () => {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+        return token;
+    }
+}

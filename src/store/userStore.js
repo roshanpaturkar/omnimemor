@@ -93,6 +93,12 @@ let useUserStore = (set) => ({
         });
     }
   },
+  resetUserState: () => {
+    set({ userToken: null });
+    set({ userDetails: null });
+    set({ isUserLoggedIn: false });
+    localStorage.removeItem('userToken');
+  }
 });
 useUserStore = persist(useUserStore, { name: 'user' });
 useUserStore = devtools(useUserStore);
