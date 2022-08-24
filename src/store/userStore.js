@@ -6,7 +6,7 @@ import { customLogger, httpErrorLogger } from '../utils/logsManager';
 
 const baseApi = process.env.REACT_APP_BASE_API;
 
-let useUserStore = (set) => ({
+let useUserStore = (set, get) => ({
   userToken: null,
   isUserLoggedIn: false,
   userDetails: null,
@@ -34,10 +34,7 @@ let useUserStore = (set) => ({
       .catch((err) => {
         httpErrorLogger(err);
         if (err.response.status === 401) {
-          set({ userToken: null });
-          set({ userDetails: null });
-          set({ isUserLoggedIn: false });
-          localStorage.removeItem('userToken');
+          get().resetUserState()
         }
       });
   },
@@ -61,10 +58,7 @@ let useUserStore = (set) => ({
       .catch((err) => {
         httpErrorLogger(err);
         if (err.response.status === 401) {
-          set({ userToken: null });
-          set({ userDetails: null });
-          set({ isUserLoggedIn: false });
-          localStorage.removeItem('userToken');
+          get().resetUserState()
         }
       });
   },
@@ -85,10 +79,7 @@ let useUserStore = (set) => ({
         .catch((err) => {
           httpErrorLogger(err);
           if (err.response.status === 401) {
-            set({ userToken: null });
-            set({ userDetails: null });
-            set({ isUserLoggedIn: false });
-            localStorage.removeItem('userToken');
+            get().resetUserState()
           }
         });
     }
