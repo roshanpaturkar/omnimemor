@@ -3,6 +3,7 @@ import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { getUserData } from '../utils/userManager';
 import { customLogger, httpErrorLogger } from '../utils/logsManager';
+import useTaskStore from './taskStore';
 
 const baseApi = process.env.REACT_APP_BASE_API;
 
@@ -50,10 +51,8 @@ let useUserStore = (set, get) => ({
     };
     await axios(config)
       .then((res) => {
-        localStorage.removeItem('userToken');
-        set({ userToken: null });
-        set({ userDetails: null });
-        set({ isUserLoggedIn: false });
+        get().resetUserState();
+        useTaskStore.getState().resetTasksTest();
       })
       .catch((err) => {
         httpErrorLogger(err);

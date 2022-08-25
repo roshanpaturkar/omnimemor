@@ -7,7 +7,7 @@ import useUserStore  from './userStore'
 
 const baseApi = process.env.REACT_APP_BASE_API;
 
-let useTaskStore = (set) => ({
+let useTaskStore = (set, get) => ({
     tasks: [],
     getAllTask: async () => {
         customLogger('Getting All Tasks');   
@@ -22,10 +22,14 @@ let useTaskStore = (set) => ({
             }).catch((err) => {
                 httpErrorLogger(err);
                 if (err.response.status === 401) {
-                    useUserStore.getState().resetUserState();
+                    get().resetTasksTest();
                 }
             });
         }
+    },
+    resetTasksTest: () => {
+        set({tasks: []});
+        useUserStore.getState().resetUserState();
     }
 });
 
