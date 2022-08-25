@@ -3,10 +3,9 @@ import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { getUserData, getUserToken } from '../utils/userManager';
 import { customLogger, httpErrorLogger } from '../utils/logsManager';
-// import { useUserStore } from './userStore'
+import useUserStore  from './userStore'
 
 const baseApi = process.env.REACT_APP_BASE_API;
-// const { resetUserState } = useUserStore();
 
 let useTaskStore = (set) => ({
     tasks: [],
@@ -23,7 +22,7 @@ let useTaskStore = (set) => ({
             }).catch((err) => {
                 httpErrorLogger(err);
                 if (err.response.status === 401) {
-                    // resetUserState();
+                    useUserStore.getState().resetUserState();
                 }
             });
         }
