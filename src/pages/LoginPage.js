@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
+import goldenSnitch from '../assets/images/goldensnitch.png';
 import useUserStore from '../store/userStore';
 import useQuoteStore from '../store/quoteStore';
 
@@ -43,6 +44,7 @@ const LoginPage = () => {
     <MainWrapper>
       <DesignWrapper>
         <h1>Omnimemor</h1>
+        <img src={goldenSnitch} alt="Golden Snitch" />
         <h2>{quote}</h2>
         <h3>-{author}</h3>
       </DesignWrapper>
@@ -87,6 +89,10 @@ const DesignWrapper = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
+  img {
+    width: 500px;
+    margin-left: 16rem;
+  };
   h1 {
     font-size: 3rem;
     font-weight: bold;
@@ -95,9 +101,8 @@ const DesignWrapper = styled.div`
   };
   h2 {
     font-size: 2rem;
-    margin-top: 16rem;
     margin-left: 12rem;
-    color: black;
+    color: #B1B09B;
   };
   h3 {
     font-size: 1.5rem;
