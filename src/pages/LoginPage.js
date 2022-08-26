@@ -2,15 +2,19 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import useUserStore from '../store/userStore';
+import useQuoteStore from '../store/quoteStore';
+
 const LoginPage = () => {
   const { login, isUserLoggedIn } = useUserStore();
+  const { quote, author, getQuote } = useQuoteStore();
   const navigate = useNavigate();
 
   useEffect(() => {
+    getQuote();
     if (isUserLoggedIn) {
       navigate('/home');
     }
-  });
+  }, [isUserLoggedIn, getQuote, navigate]);
 
   const initialValues = {
     username: '',
@@ -39,6 +43,8 @@ const LoginPage = () => {
     <MainWrapper>
       <DesignWrapper>
         <h1>Omnimemor</h1>
+        <h2>{quote}</h2>
+        <h3>-{author}</h3>
       </DesignWrapper>
       <InputWrapper>
         <InnerBox>
@@ -71,8 +77,6 @@ const MainWrapper = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background-image: url('https://cdna.artstation.com/p/assets/images/images/032/123/348/4k/jerome-comentale-hogwarts.jpg');
   background-position: center;
   background-repeat: no-repeat;
@@ -82,8 +86,25 @@ const MainWrapper = styled.div`
 const DesignWrapper = styled.div`
   width: 50%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #fff;
+    padding: 3rem;
+  };
+  h2 {
+    font-size: 2rem;
+    margin-top: 16rem;
+    margin-left: 12rem;
+    color: black;
+  };
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin-left: 12rem;
+    color: #FFFFFF;
+  }
 `;
 
 const InputWrapper = styled.div`
