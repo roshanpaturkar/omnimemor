@@ -40,7 +40,7 @@ let useUserStore = (set, get) => ({
       });
   },
   logout: async () => {
-    console.log('Logging Out');
+    customLogger('Logging Out');
     const token = localStorage.getItem('userToken');
     const config = {
       method: 'post',

@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+//Global Style
+import GlobalStyle from "./GlobalStyle";
 // Pages
 import LoadingPage from './pages/LoadingPage';
 import LoginPage from './pages/LoginPage';
@@ -15,8 +17,7 @@ function App() {
 
   return (
     <div className='App'>
-      <h1>Welcome to Omnimemor!</h1>
-
+      <GlobalStyle />
       <Routes location={location} key={location.pathname}>
         <Route path='/' caseSensitive={true} element={<LoadingPage />} />
         <Route path='/login' caseSensitive={true} element={<LoginPage />} />
