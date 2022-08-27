@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
+import ReactLoading from 'react-loading';
 import goldenSnitch from '../assets/images/goldensnitch.png';
 import useUserStore from '../store/userStore';
 import useQuoteStore from '../store/quoteStore';
+import useLoadingManagerStore from '../store/loadingManagerStore';
 
 const LoginPage = () => {
   const { login, isUserLoggedIn } = useUserStore();
   const { quote, author, getQuote } = useQuoteStore();
+  const { loginLoading, setLoginLoading } = useLoadingManagerStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,8 +37,10 @@ const LoginPage = () => {
 
   const loginUser = (e) => {
     e.preventDefault();
+    setLoginLoading(true);
     login(values.username, values.password).then(() => {
       setValues(initialValues);
+      setLoginLoading(false);
       navigate('/home');
     });
   };
@@ -65,9 +70,10 @@ const LoginPage = () => {
               name='password'
               placeholder='Password'
             />
-            <button onClick={loginUser} type='submit'>
-              Login
-            </button>
+            <LoadingAnimation>
+              {loginLoading && <ReactLoading type='bars' color='#fff' height={50} width={50} />}
+            </LoadingAnimation>
+            {!loginLoading && <button onClick={loginUser} type='submit'>Login</button>}
           </FormWrapper>
         </InnerBox>
       </InputWrapper>
@@ -149,6 +155,13 @@ const FormInput = styled.input`
   border: none;
   outline: none;
   font-size: larger;
+`;
+
+const LoadingAnimation = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 `;
 
 export default LoginPage;
