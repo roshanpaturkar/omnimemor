@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
 import Task from '../components/Task'
 import useUserStore from '../store/userStore';
 import useTaskStore from '../store/taskStore';
@@ -24,6 +25,7 @@ const HomePage = () => {
 
   return (
     <>
+      <Sidebar />
       {isUserLoggedIn && (
         <div>
           <h2>Home Page!</h2>
