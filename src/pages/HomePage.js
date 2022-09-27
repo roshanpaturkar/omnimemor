@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import Task from "../components/Task";
+import PendingTask from "../components/PendingTask";
+import CompletedTask from "../components/CompletedTask";
 import useUserStore from "../store/userStore";
 import useTaskStore from "../store/taskStore";
 import styled from "styled-components";
 
 const HomePage = () => {
   const { isUserLoggedIn} = useUserStore();
-  const { tasks, getAllTask } = useTaskStore();
+  const { pendingTasks, completedTasks, getAllTask } = useTaskStore();
 
   const navigate = useNavigate();
 
@@ -34,9 +35,18 @@ const HomePage = () => {
           }}
         >
           <h2>Tasks!</h2>
-          {tasks.map((task) => (
-            <Task task={task} key={task._id} />
-          ))}
+          <h3>Pending Task</h3>
+          <PendingTasks>
+            {pendingTasks.map((task) => (
+              <PendingTask task={task} key={task._id} />
+            ))}
+          </PendingTasks>
+          <h3>Completed Task</h3>
+          <CompletedTasks>
+            {completedTasks.map((task) => (
+              <CompletedTask task={task} key={task._id} />
+            ))}
+          </CompletedTasks>
         </div>
       )}
     </HomePageWrapper>
@@ -55,4 +65,18 @@ const HomePageWrapper = styled.div`
     width: 100px;
     border-radius: 5px;
   }
+`;
+
+const PendingTasks = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+const CompletedTasks = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
 `;

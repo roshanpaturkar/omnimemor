@@ -18,7 +18,7 @@ const Sidebar = () => {
                     src={`${baseApi}/users/${userDetails._id}/avatar`}
                 />
                 <h2>{userDetails.name}</h2>
-                <h3>{userDetails.email}</h3>
+                <p>{userDetails.email}</p>
                 <button onClick={logoutUser}>Logout</button>
             </SidebarStyle>)}
         </>
