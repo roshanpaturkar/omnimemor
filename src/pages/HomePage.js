@@ -7,7 +7,7 @@ import useTaskStore from "../store/taskStore";
 import styled from "styled-components";
 
 const HomePage = () => {
-  const { isUserLoggedIn, userDetails, logout } = useUserStore();
+  const { isUserLoggedIn} = useUserStore();
   const { tasks, getAllTask } = useTaskStore();
 
   const navigate = useNavigate();
@@ -18,10 +18,6 @@ const HomePage = () => {
     }
     getAllTask();
   }, [getAllTask, isUserLoggedIn, navigate]);
-
-  const logoutUser = () => {
-    logout();
-  };
 
   return (
     <HomePageWrapper>
@@ -37,13 +33,10 @@ const HomePage = () => {
             gap: "20px",
           }}
         >
-          <h2>Home Page!</h2>
-          <h3>Name: {userDetails.name}</h3>
-          <h3>Email: {userDetails.email}</h3>
+          <h2>Tasks!</h2>
           {tasks.map((task) => (
             <Task task={task} key={task._id} />
           ))}
-          <button onClick={logoutUser}>Logout</button>
         </div>
       )}
     </HomePageWrapper>
