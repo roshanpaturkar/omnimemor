@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 const HomePage = () => {
   const { isUserLoggedIn} = useUserStore();
-  const { pendingTasks, completedTasks, getAllTask } = useTaskStore();
+  const { pendingTasks, completedTasks, refreshTasks: getAllTask } = useTaskStore();
 
   const navigate = useNavigate();
 

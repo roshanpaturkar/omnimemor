@@ -11,8 +11,8 @@ let useTaskStore = (set, get) => ({
     tasks: [],
     pendingTasks: [],
     completedTasks: [],
-    getAllTask: async () => {
-        customLogger('Getting All Tasks');   
+    refreshTasks: async () => {
+        customLogger('Refreshing Tasks');   
         const token = getUserToken()
         if (token) {
             await axios.get(`${baseApi}/tasks?sortBy=createdAt:desc`, {

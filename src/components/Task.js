@@ -1,12 +1,52 @@
+import axios from 'axios';
 import styled from "styled-components";
+import { getUserToken } from '../utils/userManager';
+import { customLogger, httpErrorLogger } from '../utils/logsManager';
+import useTaskStore from "../store/taskStore";
+
+const baseApi = process.env.REACT_APP_BASE_API;
 
 const Task = (task) => {
+  const { refreshTasks: getAllTask } = useTaskStore();
+
+  const updateTask = async (taskId, completed) => {
+    customLogger('Updating Task');
+    const token = getUserToken();
+    if (token) {
+      await axios.patch(`${baseApi}/tasks/${taskId}`, {
+        completed: !completed,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => {
+        getAllTask();
+      }).catch((err) => {
+        httpErrorLogger(err);
+      });
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    customLogger('Deleting Task');
+    const token = getUserToken()
+    await axios.delete(`${baseApi}/tasks/${taskId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      getAllTask();
+    }).catch((err) => {
+      httpErrorLogger(err);
+    });
+  };
+
   return (
     <TaskStyle isDone={task.task.completed}>
       <h4>{task.task.completed ? <span style={{ textDecoration: 'line-through' }}>{task.task.description}</span> : task.task.description}</h4>
       <ButtonRow>
-        <Button isDeleteButton={false}>{task.task.completed? 'Undo': 'Done'}</Button>
-        <Button isDeleteButton={true}>Delete</Button>
+        <Button isDeleteButton={false} onClick={() => updateTask(task.task._id, task.task.completed)}>{task.task.completed? 'Undo': 'Done'}</Button>
+        <Button isDeleteButton={true} onClick={() => deleteTask(task.task._id)}>Delete</Button>
       </ButtonRow>
     </TaskStyle>
   );
