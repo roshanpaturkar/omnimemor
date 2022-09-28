@@ -28,8 +28,8 @@ const HomePage = () => {
   };
 
   const addTaskData = (e) => {
-    toast.info('Adding Task');
     if (task) {
+      toast.info('Adding Task');
       addTask(task).then(() => {
         toast.success('Task Added Successfully');
       });
@@ -58,7 +58,6 @@ const HomePage = () => {
               <TaskInput value={task}  onChange={taskInputHandler} placeholder="Add a task" />
             <AddTaskButton onClick={addTaskData}>Add</AddTaskButton>
           </TaskInputWrapper>
-          <h2>Tasks!</h2>
           <h3>Pending Task</h3>
           <Tasks>
             {pendingTasks.map((task) => (
