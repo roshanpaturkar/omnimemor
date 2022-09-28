@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 const HomePage = () => {
   const { isUserLoggedIn} = useUserStore();
-  const { pendingTasks, completedTasks, refreshTasks: getAllTask } = useTaskStore();
+  const { pendingTasks, completedTasks, refreshTasks } = useTaskStore();
 
   const navigate = useNavigate();
 
@@ -16,8 +16,8 @@ const HomePage = () => {
     if (!isUserLoggedIn) {
       navigate("/login");
     }
-    getAllTask();
-  }, [getAllTask, isUserLoggedIn, navigate]);
+    refreshTasks();
+  }, [refreshTasks, isUserLoggedIn, navigate]);
 
   return (
     <HomePageWrapper>
