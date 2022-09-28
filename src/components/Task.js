@@ -1,5 +1,7 @@
 import axios from 'axios';
 import styled from "styled-components";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { getUserToken } from '../utils/userManager';
 import { customLogger, httpErrorLogger } from '../utils/logsManager';
 import useTaskStore from "../store/taskStore";
@@ -11,6 +13,7 @@ const Task = (task) => {
 
   const updateTask = async (taskId, completed) => {
     customLogger('Updating Task');
+    toast.info('Updating Task');
     const token = getUserToken();
     if (token) {
       await axios.patch(`${baseApi}/tasks/${taskId}`, {
@@ -20,24 +23,31 @@ const Task = (task) => {
           Authorization: `Bearer ${token}`,
         },
       }).then((res) => {
-        getAllTask();
+        getAllTask().then(() => {
+          toast.success('Task Updated Successfully');
+        });
       }).catch((err) => {
         httpErrorLogger(err);
+        toast.error('Error Updating Task');
       });
     }
   };
 
   const deleteTask = async (taskId) => {
     customLogger('Deleting Task');
+    toast.info('Deleting Task');
     const token = getUserToken()
     await axios.delete(`${baseApi}/tasks/${taskId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
-      getAllTask();
+      getAllTask().then(() => {
+        toast.success('Task Deleted Successfully');
+      });
     }).catch((err) => {
       httpErrorLogger(err);
+      toast.error('Error Deleting Task');
     });
   };
 
@@ -48,6 +58,7 @@ const Task = (task) => {
         <Button isDeleteButton={false} onClick={() => updateTask(task.task._id, task.task.completed)}>{task.task.completed? 'Undo': 'Done'}</Button>
         <Button isDeleteButton={true} onClick={() => deleteTask(task.task._id)}>Delete</Button>
       </ButtonRow>
+      <ToastContainer theme="dark" />
     </TaskStyle>
   );
 };
