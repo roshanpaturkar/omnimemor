@@ -52,6 +52,7 @@ const SidebarStyle = styled.nav`
 
     button {
         margin-top: 22px;
+        cursor: pointer;
     };
 `;
 

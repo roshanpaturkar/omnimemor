@@ -58,4 +58,5 @@ const Button = styled.button`
   background-color: ${props => props.isDeleteButton ? "white" : "black"};
   color: ${props => props.isDeleteButton ? "black" : "white"};
   border-radius: 5px;
+  cursor: pointer;
 `

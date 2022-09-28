@@ -109,6 +109,7 @@ const AddTaskButton = styled.button`
   background-color:black;
   color: white;
   border-radius: 25px;
+  cursor: pointer;
 `
 
 const Tasks = styled.div`
