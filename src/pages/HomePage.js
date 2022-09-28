@@ -1,14 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "../components/Sidebar";
 import Task from "../components/Task";
 import useUserStore from "../store/userStore";
 import useTaskStore from "../store/taskStore";
-import styled from "styled-components";
 
 const HomePage = () => {
   const { isUserLoggedIn} = useUserStore();
-  const { pendingTasks, completedTasks, refreshTasks } = useTaskStore();
+  const { pendingTasks, completedTasks, refreshTasks, addTask } = useTaskStore();
+
+  const [task, setTask] = useState("");
 
   const navigate = useNavigate();
 
@@ -18,6 +22,22 @@ const HomePage = () => {
     }
     refreshTasks();
   }, [refreshTasks, isUserLoggedIn, navigate]);
+
+  const taskInputHandler = (e) => {
+    setTask(e.target.value);
+  };
+
+  const addTaskData = (e) => {
+    toast.info('Adding Task');
+    if (task) {
+      addTask(task).then(() => {
+        toast.success('Task Added Successfully');
+      });
+    } else {
+      toast.error('Please enter a task');
+    }
+    setTask("");
+  };
 
   return (
     <HomePageWrapper>
@@ -33,6 +53,11 @@ const HomePage = () => {
             gap: "20px",
           }}
         >
+          <h1>Omnimemor</h1>
+          <TaskInputWrapper>
+              <TaskInput value={task}  onChange={taskInputHandler} placeholder="Add a task" />
+            <AddTaskButton onClick={addTaskData}>Add</AddTaskButton>
+          </TaskInputWrapper>
           <h2>Tasks!</h2>
           <h3>Pending Task</h3>
           <Tasks>
@@ -48,6 +73,7 @@ const HomePage = () => {
           </Tasks>
         </div>
       )}
+      <ToastContainer theme="dark" />
     </HomePageWrapper>
   );
 };
@@ -61,9 +87,30 @@ const HomePageWrapper = styled.div`
     padding: 10px;
     outline: none;
     width: 100px;
-    border-radius: 5px;
   }
 `;
+
+const TaskInputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+`
+
+const TaskInput = styled.input`
+  padding: 10px;
+  outline: none;
+  width: 70%;
+  border-radius: 25px;
+`
+
+const AddTaskButton = styled.button`
+  padding: 10px;
+  background-color:black;
+  color: white;
+  border-radius: 25px;
+`
 
 const Tasks = styled.div`
   display: flex;

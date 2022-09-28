@@ -11,6 +11,29 @@ let useTaskStore = (set, get) => ({
     tasks: [],
     pendingTasks: [],
     completedTasks: [],
+    addTask: async (task) => {
+        customLogger('Adding Task');
+        const token = getUserToken();
+        if (token) {
+            await axios
+                .post(`${baseApi}/tasks`, {
+                    description: task,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+                .then((res) => {
+                    get().refreshTasks();
+                })
+                .catch((err) => {
+                    httpErrorLogger(err);
+                    if (err.response.status === 401) {
+                        useUserStore.getState().resetUserState();
+                    }
+                });
+        }
+    },
     refreshTasks: async () => {
         customLogger('Refreshing Tasks');   
         const token = getUserToken()
