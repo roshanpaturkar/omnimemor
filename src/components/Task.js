@@ -1,64 +1,35 @@
-import axios from 'axios';
 import styled from "styled-components";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getUserToken } from '../utils/userManager';
-import { customLogger, httpErrorLogger } from '../utils/logsManager';
 import useTaskStore from "../store/taskStore";
 
-const baseApi = process.env.REACT_APP_BASE_API;
-
 const Task = (task) => {
-  const { refreshTasks } = useTaskStore();
+  const { updateTask, deleteTask } = useTaskStore();
 
-  const updateTask = async (taskId, completed) => {
-    customLogger('Updating Task');
+  const updateTaskData = async (taskId, completed) => {
     toast.info('Updating Task');
-    const token = getUserToken();
-    if (token) {
-      await axios.patch(`${baseApi}/tasks/${taskId}`, {
-        completed: !completed,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => {
-        refreshTasks().then(() => {
-          toast.success('Task Updated Successfully');
-        });
-      }).catch((err) => {
-        httpErrorLogger(err);
-        toast.error('Error Updating Task');
-      });
-    }
+    updateTask(taskId, completed).then(() => {
+      toast.success('Task Updated Successfully');
+    }).catch((err) => {
+      toast.error('Error Updating Task');
+    });
   };
 
-  const deleteTask = async (taskId) => {
-    customLogger('Deleting Task');
+  const deleteTaskData = async (taskId) => {
     toast.info('Deleting Task');
-    const token = getUserToken()
-    if (token) {
-      await axios.delete(`${baseApi}/tasks/${taskId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => {
-        refreshTasks().then(() => {
-          toast.success('Task Deleted Successfully');
-        });
-      }).catch((err) => {
-        httpErrorLogger(err);
-        toast.error('Error Deleting Task');
-      });
-    }
+    deleteTask(taskId).then(() => {
+      toast.success('Task Deleted Successfully');
+    }).catch((err) => {
+      toast.error('Error Deleting Task');
+    });
   };
 
   return (
     <TaskStyle isDone={task.task.completed}>
       <h4>{task.task.completed ? <span style={{ textDecoration: 'line-through' }}>{task.task.description}</span> : task.task.description}</h4>
       <ButtonRow>
-        <Button isDeleteButton={false} onClick={() => updateTask(task.task._id, task.task.completed)}>{task.task.completed ? 'Undo' : 'Done'}</Button>
-        <Button isDeleteButton={true} onClick={() => deleteTask(task.task._id)}>Delete</Button>
+        <Button isDeleteButton={false} onClick={() => updateTaskData(task.task._id, task.task.completed)}>{task.task.completed ? 'Undo' : 'Done'}</Button>
+        <Button isDeleteButton={true} onClick={() => deleteTaskData(task.task._id)}>Delete</Button>
       </ButtonRow>
       <ToastContainer theme="dark" />
     </TaskStyle>

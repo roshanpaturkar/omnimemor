@@ -34,6 +34,50 @@ let useTaskStore = (set, get) => ({
                 });
         }
     },
+    updateTask: async (taskId, completed) => {
+        customLogger('Updating Task');
+        const token = getUserToken();
+        if (token) {
+            await axios
+                .patch(`${baseApi}/tasks/${taskId}`, {
+                    completed: !completed,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((res) => {
+                    get().refreshTasks();
+                })
+                .catch((err) => {
+                    httpErrorLogger(err);
+                    if (err.response.status === 401) {
+                        useUserStore.getState().resetUserState();
+                    }
+                });
+        }
+    },
+    deleteTask: async (taskId) => {
+        customLogger('Deleting Task');
+        const token = getUserToken();
+        if (token) {
+            await axios
+                .delete(`${baseApi}/tasks/${taskId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((res) => {
+                    get().refreshTasks();
+                })
+                .catch((err) => {
+                    httpErrorLogger(err);
+                    if (err.response.status === 401) {
+                        useUserStore.getState().resetUserState();
+                    }
+                });
+        }
+    },
     refreshTasks: async () => {
         customLogger('Refreshing Tasks');   
         const token = getUserToken()
