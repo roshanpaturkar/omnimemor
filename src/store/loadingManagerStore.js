@@ -7,6 +7,7 @@ const useLoadingManagerStore = create((set) => ({
     getUserDetailsLoading: false,
     logoutLoading: false,
     setLoginLoading: (value) => set({ loginLoading: value }),
+    setRegisterLoading: (value) => set({ registerLoading: value }),
 }));
 
 export default useLoadingManagerStore;

@@ -39,6 +39,29 @@ let useUserStore = (set, get) => ({
         }
       });
   },
+  register: async (name, email, mobile, password) => {
+    customLogger('Registering User');
+    await axios
+      .post(`${baseApi}/users`, {
+        name: name,
+        email: email,
+        mobile: mobile,
+        password: password,
+      })
+      .then((res) => {
+        localStorage.setItem('userToken', res.data.token);
+
+        set({ userToken: res.data.token });
+        set({ isUserLoggedIn: true });
+        set({ userDetails: getUserData(res.data.user) });
+      })
+      .catch((err) => {
+        httpErrorLogger(err);
+        if (err.response.status === 401) {
+          get().resetUserState()
+        }
+      });
+  },
   logout: async () => {
     customLogger('Logging Out');
     const token = localStorage.getItem('userToken');

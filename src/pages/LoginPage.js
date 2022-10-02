@@ -75,6 +75,10 @@ const LoginPage = () => {
             </LoadingAnimation>
             {!loginLoading && <button onClick={loginUser} type='submit'>Login</button>}
           </FormWrapper>
+
+          <p>
+            Don't have an account? <a href='/register'>Register</a>
+          </p>
         </InnerBox>
       </InputWrapper>
     </MainWrapper>
@@ -131,6 +135,16 @@ const InnerBox = styled.div`
   justify-content: center;
   align-content: center;
   border-radius: 8px;
+
+  a {
+    text-decoration: none;
+  };
+
+  p {
+    text-align: center;
+    margin-top: 1rem;
+    color: black;
+  };
 `;
 
 const FormWrapper = styled.form`
