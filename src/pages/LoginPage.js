@@ -75,7 +75,8 @@ const LoginPage = () => {
             </LoadingAnimation>
             {!loginLoading && <button onClick={loginUser} type='submit'>Login</button>}
           </FormWrapper>
-
+          
+          <p><a href='/forget-password'>Forget Password</a></p>
           <p>
             Don't have an account? <a href='/register'>Register</a>
           </p>
