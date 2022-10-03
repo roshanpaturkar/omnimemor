@@ -6,10 +6,11 @@ import useUserStore from "../store/userStore";
 import useSidebarStateManagerStore from "../store/sidebarStateManagerStore";
 
 const Sidebar = () => {
-    const { userDetails, isUserLoggedIn, logout, updateAvatar } = useUserStore();
-    const { isUpdateProfileOpen, setUpdateProfileOpen } = useSidebarStateManagerStore();
+    const { userDetails, isUserLoggedIn, logout, updateAvatar, updateName } = useUserStore();
+    const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen } = useSidebarStateManagerStore();
 
-    const [source, setSource] = useState(userDetails.avatar);
+    const [source, setSource] = useState(userDetails? userDetails.avatar : '');
+    const [name, setName] = useState(userDetails? userDetails.name : '');
 
     const logoutUser = () => {
         logout();
@@ -33,16 +34,36 @@ const Sidebar = () => {
         }
     }
 
+    const nameInputHandler = (e) => {
+        setName(e.target.value);
+    };
+
+    const updateNameDetails = () => {
+        if (name && name.trim() !== '') {
+            toast.info('Updating Name');
+            updateName(name).then(() => {
+                setUpdateNameOpen(false);
+                toast.success('Name Updated Successfully');
+            });
+        } else {
+            toast.error('Please enter a name');
+        }
+    }
+
     return (
         <>
             {isUserLoggedIn && (<SidebarStyle>
                 <img
                     alt={userDetails.name}
                     src={source}
-                    onClick={() => setUpdateProfileOpen(true)}
+                    onDoubleClick={() => setUpdateProfileOpen(true)}
                 />
                 {isUpdateProfileOpen && <AvatarUpdater type='file' onChange={avatarInputHandler} /> }
-                <h2>{userDetails.name}</h2>
+                <h2 onDoubleClick={() => setUpdateNameOpen(true)}>{userDetails.name}</h2>
+                {isUpdateNameOpen && <NameUpdateWrapper>
+                    <input value={name} onChange={nameInputHandler} type="text" placeholder="Update Name" />
+                    <button onClick={() => updateNameDetails()}>Update</button>
+                </NameUpdateWrapper>}
                 <p>{userDetails.email}</p>
                 <button onClick={logoutUser}>Logout</button>
             </SidebarStyle>)}
@@ -96,6 +117,21 @@ const AvatarUpdater = styled.input`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+`;
+
+const NameUpdateWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+
+    input {
+        width: 200px;
+        height: 30px;
+        border-radius: 5px;
+        border: none;
+        padding: 8px;
+    }
 `;
 
 export default Sidebar;

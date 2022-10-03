@@ -106,6 +106,30 @@ let useUserStore = (set, get) => ({
         });
     }
   },
+  updateName: async (name) => {
+    customLogger('Updating User Name');
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      await axios
+        .patch(
+          `${baseApi}/users/me`, { name: name },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          set({ userDetails: getUserData(res.data) });
+        })
+        .catch((err) => {
+          httpErrorLogger(err);
+          if (err.response.status === 401) {
+            get().resetUserState()
+          }
+        });
+    }
+  },
   updateAvatar: async (avatar) => {
     customLogger('Updating User Avatar');
     const token = localStorage.getItem('userToken');
