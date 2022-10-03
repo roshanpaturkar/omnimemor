@@ -8,15 +8,27 @@ import useSidebarStateManagerStore from "../store/sidebarStateManagerStore";
 import { customLogger, httpErrorLogger } from "../utils/logsManager";
 
 const Sidebar = () => {
-    const { userDetails, isUserLoggedIn, logout, updateAvatar, updateName } = useUserStore();
-    const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen, isUpdatePasswordOpen, setUpdatePasswordOpen } = useSidebarStateManagerStore();
+    const { userDetails, isUserLoggedIn, logout, logoutAll, updateAvatar, updateName } = useUserStore();
+    const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen, isUpdatePasswordOpen, setUpdatePasswordOpen, isLogoutOptionOpen, setLogoutOptionOpen } = useSidebarStateManagerStore();
 
     const [source, setSource] = useState(userDetails ? userDetails.avatar : '');
     const [name, setName] = useState(userDetails ? userDetails.name : '');
 
-    const logoutUser = () => {
-        logout();
+    const logoutUserThisDevice = () => {
+        toast.info('Logging out');
+        logout().then(() => {
+            toast.success('Logged Out Successfully');
+            setLogoutOptionOpen(false);
+        });
     };
+
+    const logoutUserAllDevices = () => {
+        toast.info('Logging out');
+        logoutAll().then(() => {
+            toast.success('Logged Out Successfully');
+            setLogoutOptionOpen(false);
+        });
+    }
 
     const initialValues = {
         oldPassword: '',
@@ -125,7 +137,11 @@ const Sidebar = () => {
                     <button onClick={() => updatePasswordDetails()}>Update</button>
                 </UpdatePasswordWrapper> }
                 {!isUpdatePasswordOpen && <button onClick={() => setUpdatePasswordOpen(true)}>Change Password</button> }
-                <button onClick={logoutUser}>Logout</button>
+                {!isLogoutOptionOpen && <button onClick={() => setLogoutOptionOpen(true)}>Logout</button>}
+                {isLogoutOptionOpen && <LogoutButtonWrapper>
+                    <button onClick={() => logoutUserThisDevice()}>This Device</button>
+                    <button onClick={() => logoutUserAllDevices()}>All Device</button>
+                </LogoutButtonWrapper>}
             </SidebarStyle>)}
             <ToastContainer theme="dark" />
         </>
@@ -209,6 +225,15 @@ const UpdatePasswordWrapper = styled.div`
         border: none;
         padding: 8px;
     }
+`;
+
+const LogoutButtonWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 `;
 
 export default Sidebar;

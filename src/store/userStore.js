@@ -84,6 +84,28 @@ let useUserStore = (set, get) => ({
         }
       });
   },
+  logoutAll: async () => {
+    customLogger('Logging Out From All Devices');
+    const token = localStorage.getItem('userToken');
+    const config = {
+      method: 'post',
+      url: `${baseApi}/users/logoutAll`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+    await axios(config)
+      .then((res) => {
+        get().resetUserState();
+        useTaskStore.getState().resetTasksTest();
+      })
+      .catch((err) => {
+        httpErrorLogger(err);
+        if (err.response.status === 401) {
+          get().resetUserState()
+        }
+      });
+  },
   getUserDetails: async () => {
     customLogger('Getting User Details');
     const token = localStorage.getItem('userToken');

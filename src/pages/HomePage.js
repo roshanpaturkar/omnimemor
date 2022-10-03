@@ -82,11 +82,6 @@ export default HomePage;
 const HomePageWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  button {
-    padding: 10px;
-    outline: none;
-    width: 100px;
-  }
 `;
 
 const TaskInputWrapper = styled.div`
@@ -95,6 +90,12 @@ const TaskInputWrapper = styled.div`
   gap: 10px;
   width: 100%;
   justify-content: center;
+
+  button {
+    padding: 10px;
+    outline: none;
+    width: 100px;
+  }
 `
 
 const TaskInput = styled.input`

@@ -44,6 +44,12 @@ const TaskStyle = styled.div`
   border-radius: 5px;
   margin: 10px;
   background-color: ${props => props.isDone ? 'lightgray' : 'white'};
+
+  button {
+    padding: 10px;
+    outline: none;
+    width: 100px;
+  }
 `
 
 const ButtonRow = styled.div`
