@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import useUserStore from "../store/userStore";
 import useSidebarStateManagerStore from "../store/sidebarStateManagerStore";
 
@@ -17,14 +19,16 @@ const Sidebar = () => {
         const avatar = event.target.files[0];
 
         if (avatar.size > 1000000) {
-            alert("Avatar size should be less than 1MB");
+            toast.error('Avatar size should be less than 1MB');
         } else {
+            toast.info('Updating Avatar');
             const avatarData = new FormData();
             avatarData.append("avatar", avatar, avatar.name);
 
             updateAvatar(avatarData).then(() => {
                 setSource(`${userDetails.avatar}?${new Date().getTime()}`);
                 setUpdateProfileOpen(false);
+                toast.success('Avatar Updated Successfully');
             });
         }
     }
@@ -42,6 +46,7 @@ const Sidebar = () => {
                 <p>{userDetails.email}</p>
                 <button onClick={logoutUser}>Logout</button>
             </SidebarStyle>)}
+            <ToastContainer theme="dark" />
         </>
     );
 };
