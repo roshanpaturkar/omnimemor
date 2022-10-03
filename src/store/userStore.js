@@ -106,6 +106,27 @@ let useUserStore = (set, get) => ({
         });
     }
   },
+  updateAvatar: async (avatar) => {
+    customLogger('Updating User Avatar');
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      await axios
+        .post(
+          `${baseApi}/users/me/avatar`, avatar,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .catch((err) => {
+          httpErrorLogger(err);
+          if (err.response.status === 401) {
+            get().resetUserState()
+          }
+        });
+    }
+  },
   resetUserState: () => {
     set({ userToken: null });
     set({ userDetails: null });

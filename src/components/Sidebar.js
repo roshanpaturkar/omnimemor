@@ -1,22 +1,43 @@
+import { useState } from "react";
 import styled from "styled-components";
 import useUserStore from "../store/userStore";
-
-const baseApi = process.env.REACT_APP_BASE_API;
+import useSidebarStateManagerStore from "../store/sidebarStateManagerStore";
 
 const Sidebar = () => {
-    const { userDetails, isUserLoggedIn, logout } = useUserStore();
+    const { userDetails, isUserLoggedIn, logout, updateAvatar } = useUserStore();
+    const { isUpdateProfileOpen, setUpdateProfileOpen } = useSidebarStateManagerStore();
+
+    const [source, setSource] = useState(userDetails.avatar);
 
     const logoutUser = () => {
         logout();
     };
+
+    const avatarInputHandler = (event) => {
+        const avatar = event.target.files[0];
+
+        if (avatar.size > 1000000) {
+            alert("Avatar size should be less than 1MB");
+        } else {
+            const avatarData = new FormData();
+            avatarData.append("avatar", avatar, avatar.name);
+
+            updateAvatar(avatarData).then(() => {
+                setSource(`${userDetails.avatar}?${new Date().getTime()}`);
+                setUpdateProfileOpen(false);
+            });
+        }
+    }
 
     return (
         <>
             {isUserLoggedIn && (<SidebarStyle>
                 <img
                     alt={userDetails.name}
-                    src={`${baseApi}/users/${userDetails._id}/avatar`}
+                    src={source}
+                    onClick={() => setUpdateProfileOpen(true)}
                 />
+                {isUpdateProfileOpen && <AvatarUpdater type='file' onChange={avatarInputHandler} /> }
                 <h2>{userDetails.name}</h2>
                 <p>{userDetails.email}</p>
                 <button onClick={logoutUser}>Logout</button>
@@ -44,6 +65,7 @@ const SidebarStyle = styled.nav`
         height: 160px;
         border-radius: 50%;
         margin-top: 40px;
+        cursor: pointer;
     };
 
     h2 {
@@ -57,6 +79,18 @@ const SidebarStyle = styled.nav`
         border-radius: 5px;
         cursor: pointer;
     };
+`;
+
+const AvatarUpdater = styled.input`
+    margin-top: 8px;
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 `;
 
 export default Sidebar;
