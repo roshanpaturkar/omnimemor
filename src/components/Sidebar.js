@@ -180,7 +180,7 @@ const SidebarStyle = styled.nav`
     };
 
     button {
-        width: 100%;
+        width: 60%;
         padding: 10px;
         background-color: white;
         color: black;
@@ -232,7 +232,7 @@ const UpdatePasswordWrapper = styled.div`
 `;
 
 const LogoutButtonWrapper = styled.div`
-    width: 100%;
+    width: 60%;
     display: flex;
     flex-direction: row;
     justify-content: center;
