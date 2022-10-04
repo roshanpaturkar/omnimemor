@@ -122,6 +122,9 @@ const Sidebar = () => {
                 <img
                     alt={userDetails.name}
                     src={source}
+                    onError={(e) => {
+                        e.target.src = `https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png`;
+                    }}
                     onDoubleClick={() => setUpdateProfileOpen(true)}
                 />
                 {isUpdateProfileOpen && <AvatarUpdater type='file' onChange={avatarInputHandler} />}
@@ -163,6 +166,7 @@ const SidebarStyle = styled.nav`
     align-items: center;
 
     img {
+        background-color: white;
         width: 160px;
         height: 160px;
         border-radius: 50%;
