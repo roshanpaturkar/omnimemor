@@ -3,6 +3,11 @@
 # custome ignore file
 .env
 
+# firebase details
+/.firebase
+.firebaserc
+firebase.json
+
 # dependencies
 /node_modules
 /.pnp
