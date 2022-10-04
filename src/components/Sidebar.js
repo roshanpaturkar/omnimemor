@@ -4,12 +4,14 @@ import styled from "styled-components";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useUserStore from "../store/userStore";
+import useTaskStore from "../store/taskStore";
 import useSidebarStateManagerStore from "../store/sidebarStateManagerStore";
 import { customLogger, httpErrorLogger } from "../utils/logsManager";
 
 const Sidebar = () => {
     const { userDetails, isUserLoggedIn, logout, logoutAll, updateAvatar, updateName } = useUserStore();
-    const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen, isUpdatePasswordOpen, setUpdatePasswordOpen, isLogoutOptionOpen, setLogoutOptionOpen } = useSidebarStateManagerStore();
+    const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen, isUpdatePasswordOpen, setUpdatePasswordOpen, isLogoutOptionOpen, setLogoutOptionOpen, isDeleteAccountOpen, setDeleteAccountOpen } = useSidebarStateManagerStore();
+    const { resetTasksTest } = useTaskStore();
 
     const [source, setSource] = useState(userDetails ? userDetails.avatar : '');
     const [name, setName] = useState(userDetails ? userDetails.name : '');
@@ -43,7 +45,6 @@ const Sidebar = () => {
             ...values,
             [name]: value,
         });
-        console.log(values);
     };
 
     const avatarInputHandler = (event) => {
@@ -91,10 +92,10 @@ const Sidebar = () => {
                 if (token) {
                     await axios
                         .patch(
-                            `${process.env.REACT_APP_BASE_API}/users/me/password`, { 
-                                oldPassword: values.oldPassword.trim(), 
-                                newPassword: values.oldPassword.trim()
-                            },
+                            `${process.env.REACT_APP_BASE_API}/users/me/password`, {
+                            oldPassword: values.oldPassword.trim(),
+                            newPassword: values.oldPassword.trim()
+                        },
                             {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
@@ -116,6 +117,35 @@ const Sidebar = () => {
         }
     };
 
+    const deleteAccount = async () => {
+        if (values.newPassword && values.newPassword.trim() !== '') {
+            const token = localStorage.getItem('userToken');
+            if (token) {
+                customLogger('Deleting User Account');
+                toast.info('Deleting Account');
+                await axios.delete(`${process.env.REACT_APP_BASE_API}/users/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    data: {
+                        password: values.newPassword.trim(),
+                    },
+                }).then(() => {
+                    toast.success('Account deleted successfully');
+                    resetTasksTest();
+                    setValues(initialValues);
+                    setDeleteAccountOpen(false);
+                }).catch((err) => {
+                    httpErrorLogger(err);
+                    toast.error('Password is incorrect!');
+                    setValues(initialValues);
+                });
+            }
+        } else {
+            toast.error('Please enter password');
+        }
+    }
+
     return (
         <>
             {isUserLoggedIn && (<SidebarStyle>
@@ -134,12 +164,17 @@ const Sidebar = () => {
                     <button onClick={() => updateNameDetails()}>Update</button>
                 </NameUpdateWrapper>}
                 <p>{userDetails.email}</p>
-                {isUpdatePasswordOpen && <UpdatePasswordWrapper>
+                {isUpdatePasswordOpen && <PasswordWrapper>
                     <input value={values.oldPassword} onChange={handleInputChange} type="password" name="oldPassword" placeholder="Old Password" />
                     <input value={values.newPassword} onChange={handleInputChange} type="password" name="newPassword" placeholder="New Password" />
                     <button onClick={() => updatePasswordDetails()}>Update</button>
-                </UpdatePasswordWrapper> }
-                {!isUpdatePasswordOpen && <button onClick={() => setUpdatePasswordOpen(true)}>Change Password</button> }
+                </PasswordWrapper>}
+                {!isUpdatePasswordOpen && <button onClick={() => setUpdatePasswordOpen(true)}>Change Password</button>}
+                {isDeleteAccountOpen && <PasswordWrapper>
+                    <input value={values.newPassword} onChange={handleInputChange} type="password" name="newPassword" placeholder="Password" />
+                    <button onClick={() => deleteAccount()}>Delete Account</button>
+                </PasswordWrapper>}
+                {!isDeleteAccountOpen && <button onClick={() => setDeleteAccountOpen(true)}>Delete Account</button>}
                 {!isLogoutOptionOpen && <button onClick={() => setLogoutOptionOpen(true)}>Logout</button>}
                 {isLogoutOptionOpen && <LogoutButtonWrapper>
                     <button onClick={() => logoutUserThisDevice()}>This Device</button>
@@ -179,8 +214,12 @@ const SidebarStyle = styled.nav`
         cursor: pointer;
     };
 
+    p {
+        margin-bottom: 16px;
+    }
+
     button {
-        width: 60%;
+        width: 75%;
         padding: 10px;
         background-color: white;
         color: black;
@@ -216,7 +255,7 @@ const NameUpdateWrapper = styled.div`
     }
 `;
 
-const UpdatePasswordWrapper = styled.div`
+const PasswordWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -232,7 +271,7 @@ const UpdatePasswordWrapper = styled.div`
 `;
 
 const LogoutButtonWrapper = styled.div`
-    width: 60%;
+    width: 75%;
     display: flex;
     flex-direction: row;
     justify-content: center;
