@@ -158,28 +158,39 @@ const Sidebar = () => {
                     onDoubleClick={() => setUpdateProfileOpen(true)}
                 />
                 {isUpdateProfileOpen && <AvatarUpdater type='file' onChange={avatarInputHandler} />}
+                {isUpdateProfileOpen && <button onClick={() => setUpdateProfileOpen(false)}>Cancel</button>}
                 <h2 onDoubleClick={() => setUpdateNameOpen(true)}>{userDetails.name}</h2>
                 {isUpdateNameOpen && <NameUpdateWrapper>
                     <input value={name} onChange={nameInputHandler} type="text" placeholder="Update Name" />
-                    <button onClick={() => updateNameDetails()}>Update</button>
+                    {isUpdateNameOpen && <ButtonsRowWrapper>
+                        <button onClick={updateNameDetails}>Update</button>
+                        <button onClick={() => setUpdateNameOpen(false)}>Cancel</button>
+                    </ButtonsRowWrapper>}
                 </NameUpdateWrapper>}
                 <p>{userDetails.email}</p>
                 {isUpdatePasswordOpen && <PasswordWrapper>
                     <input value={values.oldPassword} onChange={handleInputChange} type="password" name="oldPassword" placeholder="Old Password" />
                     <input value={values.newPassword} onChange={handleInputChange} type="password" name="newPassword" placeholder="New Password" />
-                    <button onClick={() => updatePasswordDetails()}>Update</button>
+                    {isUpdatePasswordOpen && <ButtonsRowWrapper>
+                        <button onClick={() => updatePasswordDetails()}>Change</button>
+                        <button onClick={() => setUpdatePasswordOpen(false)}>Cancel</button>
+                    </ButtonsRowWrapper>}
                 </PasswordWrapper>}
                 {!isUpdatePasswordOpen && <button onClick={() => setUpdatePasswordOpen(true)}>Change Password</button>}
                 {isDeleteAccountOpen && <PasswordWrapper>
                     <input value={values.newPassword} onChange={handleInputChange} type="password" name="newPassword" placeholder="Password" />
-                    <button onClick={() => deleteAccount()}>Delete Account</button>
+                    <ButtonsRowWrapper>
+                        <button onClick={() => deleteAccount()}>Delete</button>
+                        <button onClick={() => setDeleteAccountOpen(false)}>Cancel</button>
+                    </ButtonsRowWrapper>
                 </PasswordWrapper>}
                 {!isDeleteAccountOpen && <button onClick={() => setDeleteAccountOpen(true)}>Delete Account</button>}
                 {!isLogoutOptionOpen && <button onClick={() => setLogoutOptionOpen(true)}>Logout</button>}
-                {isLogoutOptionOpen && <LogoutButtonWrapper>
+                {isLogoutOptionOpen && <ButtonsRowWrapper>
                     <button onClick={() => logoutUserThisDevice()}>This Device</button>
                     <button onClick={() => logoutUserAllDevices()}>All Device</button>
-                </LogoutButtonWrapper>}
+                </ButtonsRowWrapper>}
+                {isLogoutOptionOpen && <button onClick={() => setLogoutOptionOpen(false)}>cancle</button>}
             </SidebarStyle>)}
             <ToastContainer theme="dark" />
         </>
@@ -241,6 +252,7 @@ const AvatarUpdater = styled.input`
 `;
 
 const NameUpdateWrapper = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -256,6 +268,7 @@ const NameUpdateWrapper = styled.div`
 `;
 
 const PasswordWrapper = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -270,7 +283,7 @@ const PasswordWrapper = styled.div`
     }
 `;
 
-const LogoutButtonWrapper = styled.div`
+const ButtonsRowWrapper = styled.div`
     width: 75%;
     display: flex;
     flex-direction: row;
