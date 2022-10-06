@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Buffer } from "buffer";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useUserStore from "../store/userStore";
@@ -13,8 +14,21 @@ const Sidebar = () => {
     const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen, isUpdatePasswordOpen, setUpdatePasswordOpen, isLogoutOptionOpen, setLogoutOptionOpen, isDeleteAccountOpen, setDeleteAccountOpen } = useSidebarStateManagerStore();
     const { resetTasksTest } = useTaskStore();
 
-    const [source, setSource] = useState(userDetails ? userDetails.avatar : '');
+    const [avatarSource, setAvatarSource] = useState(userDetails ? userDetails.avatar : '');
     const [name, setName] = useState(userDetails ? userDetails.name : '');
+
+    useEffect(() => {
+        const getAvatarData = () => {
+            axios
+                .get(userDetails.avatar, {
+                    responseType: "arraybuffer",
+                })
+                .then((response) =>
+                    setAvatarSource(Buffer.from(response.data).toString("base64"))
+                );
+        }
+        getAvatarData();
+    }, [userDetails.avatar]);
 
     const logoutUserThisDevice = () => {
         toast.info('Logging out');
@@ -58,7 +72,13 @@ const Sidebar = () => {
             avatarData.append("avatar", avatar, avatar.name);
 
             updateAvatar(avatarData).then(() => {
-                setSource(`${userDetails.avatar}?${new Date().getTime()}`);
+                axios 
+                    .get(userDetails.avatar, {
+                        responseType: "arraybuffer",
+                    })
+                    .then((response) => 
+                        setAvatarSource(Buffer.from(response.data).toString("base64"))
+                    );
                 setUpdateProfileOpen(false);
                 toast.success('Avatar Updated Successfully');
             });
@@ -151,9 +171,9 @@ const Sidebar = () => {
             {isUserLoggedIn && (<SidebarStyle>
                 <img
                     alt={userDetails.name}
-                    src={source}
+                    src={"data:image/jpeg;base64," + avatarSource}
                     onError={(e) => {
-                        e.target.src = `https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png`;
+                        e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png';
                     }}
                     onDoubleClick={() => setUpdateProfileOpen(true)}
                 />
