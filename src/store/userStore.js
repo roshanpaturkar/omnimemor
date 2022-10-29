@@ -175,7 +175,7 @@ let useUserStore = (set, get) => ({
   },
   resetUserState: () => {
     set({ userToken: null });
-    set({ userDetails: null });
+    set({ userDetails: { avatar: '' } });
     set({ isUserLoggedIn: false });
     localStorage.removeItem('userToken');
   }
