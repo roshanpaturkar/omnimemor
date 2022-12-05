@@ -20,11 +20,9 @@ const Sidebar = () => {
     useEffect(() => {
         const getAvatarData = () => {
             axios
-                .get(userDetails.avatar, {
-                    responseType: "arraybuffer",
-                })
+                .get(userDetails.avatar)
                 .then((response) =>
-                    setAvatarSource(Buffer.from(response.data).toString("base64"))
+                    setAvatarSource(Buffer.from(response.data.image).toString("base64"))
                 );
         }
         getAvatarData();
@@ -73,11 +71,9 @@ const Sidebar = () => {
 
             updateAvatar(avatarData).then(() => {
                 axios 
-                    .get(userDetails.avatar, {
-                        responseType: "arraybuffer",
-                    })
+                    .get(userDetails.avatar)
                     .then((response) => 
-                        setAvatarSource(Buffer.from(response.data).toString("base64"))
+                        setAvatarSource(Buffer.from(response.data.image).toString("base64"))
                     );
                 setUpdateProfileOpen(false);
                 toast.success('Avatar Updated Successfully');
