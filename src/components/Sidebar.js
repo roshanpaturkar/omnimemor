@@ -10,7 +10,7 @@ import useSidebarStateManagerStore from "../store/sidebarStateManagerStore";
 import { customLogger, httpErrorLogger } from "../utils/logsManager";
 
 const Sidebar = () => {
-    const { userDetails, isUserLoggedIn, logout, logoutAll, updateAvatar, updateName } = useUserStore();
+    const { userDetails, isUserLoggedIn, logout, logoutAll, updateAvatar, updateName, resetUserState } = useUserStore();
     const { isUpdateProfileOpen, setUpdateProfileOpen, isUpdateNameOpen, setUpdateNameOpen, isUpdatePasswordOpen, setUpdatePasswordOpen, isLogoutOptionOpen, setLogoutOptionOpen, isDeleteAccountOpen, setDeleteAccountOpen } = useSidebarStateManagerStore();
     const { resetTasksTest } = useTaskStore();
 
@@ -121,6 +121,7 @@ const Sidebar = () => {
                             toast.success('Password changed successfully');
                             setValues(initialValues);
                             setUpdatePasswordOpen(false);
+                            resetUserState();
                         })
                         .catch((err) => {
                             httpErrorLogger(err);
