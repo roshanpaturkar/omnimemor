@@ -31,7 +31,6 @@ const Sidebar = () => {
     const logoutUserThisDevice = () => {
         toast.info('Logging out');
         logout().then(() => {
-            toast.success('Logged Out Successfully');
             setLogoutOptionOpen(false);
         });
     };
@@ -39,7 +38,6 @@ const Sidebar = () => {
     const logoutUserAllDevices = () => {
         toast.info('Logging out');
         logoutAll().then(() => {
-            toast.success('Logged Out Successfully');
             setLogoutOptionOpen(false);
         });
     }
@@ -76,7 +74,6 @@ const Sidebar = () => {
                         setAvatarSource(Buffer.from(response.data.image).toString("base64"))
                     );
                 setUpdateProfileOpen(false);
-                toast.success('Avatar Updated Successfully');
             });
         }
     }
@@ -90,7 +87,6 @@ const Sidebar = () => {
             toast.info('Updating Name');
             updateName(name).then(() => {
                 setUpdateNameOpen(false);
-                toast.success('Name Updated Successfully');
             });
         } else {
             toast.error('Please enter a name');
@@ -118,7 +114,6 @@ const Sidebar = () => {
                                 },
                             }
                         ).then(() => {
-                            toast.success('Password changed successfully');
                             setValues(initialValues);
                             setUpdatePasswordOpen(false);
                             resetUserState();
@@ -148,7 +143,6 @@ const Sidebar = () => {
                         password: values.newPassword.trim(),
                     },
                 }).then(() => {
-                    toast.success('Account deleted successfully');
                     resetTasksTest();
                     setValues(initialValues);
                     setDeleteAccountOpen(false);

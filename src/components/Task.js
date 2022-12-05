@@ -9,7 +9,6 @@ const Task = (task) => {
   const updateTaskData = async (taskId, completed) => {
     toast.info('Updating Task');
     updateTask(taskId, completed).then(() => {
-      toast.success('Task Updated Successfully');
     }).catch((err) => {
       toast.error('Error Updating Task');
     });
@@ -18,7 +17,6 @@ const Task = (task) => {
   const deleteTaskData = async (taskId) => {
     toast.info('Deleting Task');
     deleteTask(taskId).then(() => {
-      toast.success('Task Deleted Successfully');
     }).catch((err) => {
       toast.error('Error Deleting Task');
     });

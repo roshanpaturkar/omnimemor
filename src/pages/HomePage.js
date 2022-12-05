@@ -31,7 +31,6 @@ const HomePage = () => {
     if (task) {
       toast.info('Adding Task');
       addTask(task).then(() => {
-        toast.success('Task Added Successfully');
       });
     } else {
       toast.error('Please enter a task');

@@ -17,7 +17,6 @@ const ForgetPasswordPage = () => {
             toast.error(error);
         }
         if (isPasswordReset) {
-            toast.success('Password reset successful!');
             navigate('/login');
             resetOtpManagerState()
         }
