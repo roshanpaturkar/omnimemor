@@ -13,6 +13,13 @@ import useUserStore from './store/userStore';
 function App() {
   const location = useLocation();
   const { checkUserToken } = useUserStore();
+
+  if (process.env.NODE_ENV !== "development") {
+    console.log = () => { };
+    console.warn = () => { };
+    console.error = () => { };
+  }
+
   useEffect(() => {
     checkUserToken();
   }, [checkUserToken]);
