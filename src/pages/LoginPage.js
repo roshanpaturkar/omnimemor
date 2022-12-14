@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import ReactLoading from 'react-loading';
 import goldenSnitch from '../assets/images/goldensnitch.png';
+import loginImage from '../assets/images/login.jpg';
 import useUserStore from '../store/userStore';
 import useQuoteStore from '../store/quoteStore';
 import useLoadingManagerStore from '../store/loadingManagerStore';
@@ -90,7 +91,7 @@ const MainWrapper = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
-  background-image: url('https://cdna.artstation.com/p/assets/images/images/032/123/348/4k/jerome-comentale-hogwarts.jpg');
+  background-image: url(${loginImage});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

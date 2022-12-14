@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useOtpManagerStore from '../store/otpManagerStore';
 import useLoadingManagerStore from '../store/loadingManagerStore';
+import forgetPasswordImage from '../assets/images/password.jpg';
 
 const ForgetPasswordPage = () => {
     const { isOtpSent, isOtpVerified, isPasswordReset, error, setError, sendOtp, verifyOtp, resetPassword, resetOtpManagerState } = useOtpManagerStore();
@@ -121,7 +122,7 @@ const MainWrapper = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
-  background-image: url('https://allears.net/wp-content/uploads/2021/08/2021-Warner-Bros-Studio-Tour-London-The-Making-of-Harry-Potter-Hogwarts-after-dark.jpeg');
+  background-image: url(${forgetPasswordImage});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

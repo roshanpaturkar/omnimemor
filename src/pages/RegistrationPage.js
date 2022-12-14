@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useUserStore from '../store/userStore';
 import useQuoteStore from '../store/quoteStore';
 import useLoadingManagerStore from '../store/loadingManagerStore';
+import registrationImage from '../assets/images/registartion.jpg';
 
 const Registration = () => {
     const { register, isUserLoggedIn } = useUserStore();
@@ -145,7 +146,7 @@ const MainWrapper = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
-  background-image: url('https://images.unsplash.com/photo-1547756536-cde3673fa2e5?ixlib=rb-1.2.1&dl=b-k-HAl6CKxM3xU-unsplash.jpg');
+  background-image: url(${registrationImage});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
